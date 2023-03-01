@@ -11,4 +11,4 @@ userRouter.post('/login',userLogin);
 
 
 
-modele.exports = userRouter;
+module.exports = userRouter;

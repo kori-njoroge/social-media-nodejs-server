@@ -1,5 +1,5 @@
 const sql = require('mssql')
-const config = require('../sqlconfig')
+const {config }= require('../sqlconfig')
 
 
 module.exports = {
@@ -13,7 +13,7 @@ module.exports = {
         } = req.body
         try {
             await sql.connect(config);
-            let result = await sql.query`INSERT INTO social.users VALUES(${fullName},${email},${phonenumber},${friends},${password})`
+            let result = await sql.query`INSERT INTO users VALUES(${fullName},${email},${phonenumber},${friends},${password})`
             if (result.rowsAffected.length) res.json({ message: 'User successfully created' })
         } catch (error) {
             console.log(error)
@@ -24,10 +24,11 @@ module.exports = {
         const {
             phonenumber,
             password
-        } = req.body;
+        } = req.body;    
+        // res.json(req.body)
         try {
             await sql.connect(config);
-            let result = await sql.query`SELECT * FROM social.users WHERE phonenumber = ${phonenumber}`
+            let result = await sql.query`SELECT * FROM users WHERE phonenumber = ${phonenumber}`
             console.log("query successful")
             if (result) {
                 if (await result.password === password) res.json({ message: 'Login successful' })

@@ -1,16 +1,23 @@
 const express = require('express');
 const app = express();
+require('dotenv').config();
 
-require('dotenv').config()
+
+// files
+const userRouter = require('./routers/userRoutes')
 
 
 app.use(express.urlencoded({extended:true}));
 app.use(express.json());
 
+
+
 // code
 app.get('/',(req,res) =>{
     res.json({message: 'Welcome to Social media back end'})
 })
+
+app.use('/users',userRouter);
 
 
 
