@@ -27,7 +27,14 @@ module.exports = {
         } = req.body;
         try {
             await sql.connect(config);
-            let result = await  sql.query`SELECT * FROM social.users`
+            let result = await sql.query`SELECT * FROM social.users WHERE phonenumber = ${phonenumber}`
+            console.log("query successful")
+            if (result) {
+                if (await result.password === password) res.json({ message: 'Login successful' })
+                else res.json({ message: 'Check your password' });
+            } else {
+                res.json({ message: 'User does not exist' });
+            }
         } catch (error) {
             console.log(error)
         }
