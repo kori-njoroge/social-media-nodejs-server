@@ -1,5 +1,5 @@
 const sql = require('mssql')
-const {config }= require('../sqlconfig')
+const { config } = require('../sqlconfig')
 
 
 module.exports = {
@@ -24,17 +24,17 @@ module.exports = {
         const {
             phonenumber,
             password
-        } = req.body;    
-        // res.json(req.body)
+        } = req.body;
         try {
             await sql.connect(config);
             let result = await sql.query`SELECT * FROM users WHERE phonenumber = ${phonenumber}`
-            console.log("query successful")
-            if (result) {
-                if (await result.password === password) res.json({ message: 'Login successful' })
-                else res.json({ message: 'Check your password' });
+            if (result.recordset.length) {
+                console.log("query successful")
+                const userPass = await result.recordset[0].password
+                if (userPass === password) res.json({ message: 'Login successful' })
+                else res.json({ message: 'Check your credentials' });
             } else {
-                res.json({ message: 'User does not exist' });
+                res.send({ message: 'User Not Found' })
             }
         } catch (error) {
             console.log(error)
