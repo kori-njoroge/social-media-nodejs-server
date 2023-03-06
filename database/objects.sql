@@ -62,8 +62,3 @@ CREATE TABLE friends (
     user_id INT FOREIGN KEY REFERENCES users(user_id),
     friend_username VARCHAR(50)
 );
-
-
-drop table users
-
-select * from users
