@@ -1,7 +1,7 @@
 const sql = require('mssql')
 const Joi = require('joi')
-const { config } = require('../sqlconfig')
-const  createValidator  = require('../utility/validators');
+const { config } = require('../sql-config')
+const createValidator = require('../services/validators');
 
 
 const loginSchema = Joi.object({
@@ -9,20 +9,25 @@ const loginSchema = Joi.object({
     password: Joi.string().min(6).required(),
 });
 
+// (user_id, full_name, email , user_name, phone_number, [password], is_deleted , gender, country  )
 module.exports = {
     addUser: async (req, res) => {
         const {
             fullName,
             email,
-            phonenumber,
-            friends,
-            password
+            userName,
+            phoneNumber,
+            password,
+            gender,
+            country 
         } = req.body
+
         try {
             await sql.connect(config);
 
-            let result = await sql.query`INSERT INTO users VALUES(${fullName},${email},${phonenumber},${friends},${password})`
-
+            let result = await sql.query`INSERT INTO users
+            (full_name, email , user_name, phone_number, [password], gender, country ) VALUES
+            (${fullName},${email},${userName},${phoneNumber},${password}, ${gender}, ${country} )`
             if (result.rowsAffected.length) res.json({ message: 'User successfully created' })
 
         } catch (error) {

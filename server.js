@@ -4,7 +4,7 @@ require('dotenv').config();
 
 
 // files
-const userRouter = require('./routers/userRoutes')
+const userRouter = require('./routers/user-routes')
 
 
 app.use(express.urlencoded({extended:true}));
