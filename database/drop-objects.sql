@@ -1,1 +1,15 @@
+USE SocialMedia_DB
+GO
+
+DROP TABLE IF EXISTS comments
+GO
+
+DROP TABLE IF EXISTS posts
+GO
+
+DROP TABLE IF EXISTS friends
+GO
+
 DROP TABLE IF EXISTS users
+GO
+
