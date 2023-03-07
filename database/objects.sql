@@ -11,13 +11,13 @@ CREATE TABLE users
     user_name NVARCHAR(234) UNIQUE ,
     email NVARCHAR(234) NOT NULL UNIQUE ,
     phone_number NVARCHAR(234) UNIQUE,
-    [password] NVARCHAR(234) NOT NULL ,
     created_at DATETIME2 NOT NULL DEFAULT(GETUTCDATE()),
     gender VARCHAR(20) NOT NULL,
     country VARCHAR(234) NOT NULL,
     cover_image NVARCHAR(max) ,
     profile_image NVARCHAR(max) ,
-    is_deleted BIT DEFAULT 0
+    is_deleted BIT DEFAULT 0,
+    [password] NVARCHAR(234) NOT NULL 
 )
 GO
 
