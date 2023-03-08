@@ -46,6 +46,9 @@ module.exports = {
     },
 
     userLogin: async (req, res) => {
+
+        const validateLogin = createValidator(loginSchema);
+
         try {
             const { email, password } = req.body;
 
@@ -54,17 +57,21 @@ module.exports = {
 
             if (result.recordset.length) {
                 const userPass = result.recordset[0].password;
-                if (userPass === password) {
+                const bcryptRes = await  bcrypt.compare(password, userPass)
+                if (bcryptRes) {
                     res.json({ message: 'Login successful' });
                 } else {
-                    res.send({ message: 'User Not Found' });
+                    res.json({ message: 'Check your credentials' });
                 }
-        } else {
-            res.status(400).json({
+            } else {
+                res.send({ message: 'User Not Found' });
+            }
+        } catch (error) {
+            console.log(error);
+            return res.status(400).json({
                 error: "Bad Request",
                 message: error.message
             });
-
         }
     }
 }

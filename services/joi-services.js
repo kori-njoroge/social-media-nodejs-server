@@ -15,7 +15,7 @@ const signUpSchema = Joi.object({
     userName: Joi.string()
         .min(6).required(),
 
-    email: Joi.email()
+    email: Joi.string()
         .email({ minDomainSegments: 2, tlds: ['*'] })
         .required(),
 
