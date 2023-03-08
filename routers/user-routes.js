@@ -2,7 +2,7 @@ const userRouter = require('express').Router();
 
 
 const { SchemaValidateMiddleware } = require('../middlewares/schema-validate');
-const signUpSchema = require('../services/joi-services');
+const {signUpSchema, loginSchema} = require('../services/joi-services');
 const {
     addUser,
     userLogin
@@ -11,7 +11,7 @@ const {
 
 
 userRouter.post('/signup',(req,res,next) =>SchemaValidateMiddleware(req,res,next,signUpSchema), addUser);
-userRouter.post('/login',userLogin);
+userRouter.post('/login',(req,res,next) =>SchemaValidateMiddleware(req,res,next,loginSchema),userLogin);
 
 
 
