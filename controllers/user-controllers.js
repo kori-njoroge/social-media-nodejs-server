@@ -1,7 +1,10 @@
 const sql = require('mssql')
 const Joi = require('joi')
+const bcrypt = require('bcrypt')
+
 const { config } = require('../sql-config')
 const createValidator = require('../services/validators');
+const validateSchema = require('../services/joi-services');
 
 
 const loginSchema = Joi.object({
@@ -19,19 +22,26 @@ module.exports = {
             phoneNumber,
             password,
             gender,
-            country 
+            country
         } = req.body
+        const { value, error } = validateSchema(req.body)
+        // console.log(value || error);
+        if (value) {
+            try {
 
-        try {
-            await sql.connect(config);
+                await sql.connect(config);
 
-            let result = await sql.query`INSERT INTO users
-            (full_name, email , user_name, phone_number, [password], gender, country ) VALUES
-            (${fullName},${email},${userName},${phoneNumber},${password}, ${gender}, ${country} )`
-            if (result.rowsAffected.length) res.json({ message: 'User successfully created' })
+                const hash = await bcrypt.hash(value.password, 8)
+                let result = await sql.query`INSERT INTO users
+                (full_name, email , user_name, phone_number, [password], gender, country ) VALUES
+                (${value.fullName},${value.email},${value.userName},${value.phoneNumber},${hash}, ${value.gender}, ${value.country} )`
+                if (result.rowsAffected.length) res.json({ message: 'User successfully created' })
 
-        } catch (error) {
-            console.log(error)
+            } catch (error) {
+                console.log(error)
+            }
+        } else {
+            res.json({ message: error })
         }
     },
 
@@ -47,17 +57,14 @@ module.exports = {
                 if (userPass === password) {
                     res.json({ message: 'Login successful' });
                 } else {
-                    res.json({ message: 'Check your credentials' });
+                    res.send({ message: 'User Not Found' });
                 }
-            } else {
-                res.send({ message: 'User Not Found' });
-            }
-        } catch (error) {
-            console.log(error);
-            return res.status(400).json({
+        } else {
+            res.status(400).json({
                 error: "Bad Request",
                 message: error.message
             });
+
         }
     }
 }

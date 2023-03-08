@@ -1,6 +1,13 @@
 const Joi = require('joi');
 
 
+
+// gender VARCHAR(20) NOT NULL,
+// country VARCHAR(234) NOT NULL,
+// cover_image NVARCHAR(max) ,
+// profile_image NVARCHAR(max) ,
+// is_deleted BIT DEFAULT 0
+
 const signUpSchema = Joi.object({
     full_name: Joi.string()
         .required(),
@@ -8,7 +15,7 @@ const signUpSchema = Joi.object({
     userName: Joi.string()
         .min(6).required(),
 
-    email: Joi.string()
+    email: Joi.email()
         .email({ minDomainSegments: 2, tlds: ['*'] })
         .required(),
 
@@ -18,6 +25,7 @@ const signUpSchema = Joi.object({
         .required(),
 
     country: Joi.string(),
+
 
     gender:Joi.string(),
 
