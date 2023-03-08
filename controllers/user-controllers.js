@@ -36,18 +36,15 @@ module.exports = {
     },
 
     userLogin: async (req, res) => {
-
-        const validateLogin = createValidator(loginSchema);
-
         try {
-            const { email: validatedEmail, password: validatedPassword } = validateLogin(req.body);
+            const { email, password } = req.body;
 
             await sql.connect(config);
-            const result = await sql.query`SELECT * FROM users WHERE email = ${validatedEmail}`;
+            const result = await sql.query`SELECT * FROM users WHERE email = ${email}`;
 
             if (result.recordset.length) {
                 const userPass = result.recordset[0].password;
-                if (userPass === validatedPassword) {
+                if (userPass === password) {
                     res.json({ message: 'Login successful' });
                 } else {
                     res.json({ message: 'Check your credentials' });
