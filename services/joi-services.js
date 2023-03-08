@@ -8,7 +8,7 @@ const signUpSchema = Joi.object({
     userName: Joi.string()
         .min(6).required(),
 
-    email: Joi.email()
+    email: Joi.string()
         .email({ minDomainSegments: 2, tlds: ['*'] })
         .required(),
 
@@ -23,16 +23,11 @@ const signUpSchema = Joi.object({
 
     password: Joi.string()
         .pattern(new RegExp('^[a-zA-Z1-9]{5,30}'))
-        .number(),
+        .required(),
 
     connfirmpassword: Joi.ref('password'),
 }).with('password', 'confirmpassword')
 
 
 
-
-const validateSchema = (payload) => {
-    return signUpschema.validate(payload, { abortEarly: false })
-}
-
-module.exports = validateSchema
+module.exports = signUpSchema

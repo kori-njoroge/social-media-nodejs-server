@@ -19,12 +19,12 @@ module.exports = {
             phoneNumber,
             password,
             gender,
-            country 
+            country
         } = req.body
 
         try {
-            await sql.connect(config);
 
+            await sql.connect(config);
             let result = await sql.query`INSERT INTO users
             (full_name, email , user_name, phone_number, [password], gender, country ) VALUES
             (${fullName},${email},${userName},${phoneNumber},${password}, ${gender}, ${country} )`
@@ -35,6 +35,8 @@ module.exports = {
         }
     },
 
+
+    
     userLogin: async (req, res) => {
 
         const validateLogin = createValidator(loginSchema);
