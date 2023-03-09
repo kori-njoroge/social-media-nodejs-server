@@ -21,18 +21,6 @@ CREATE TABLE users
 )
 GO
 
-INSERT INTO users
-    (full_name, email , user_name, phone_number, [password], gender, country )
-VALUES
-    ('John Doe', 'john.doe@example.com', 'd_john', '254711111111', '123456.john.doe', 'male', 'US'),
-    ('Jane Doe', 'jan.doe@example.com', 'jany_d', '254722222222', '123456.jane.doe', 'female', 'US'),
-    ('Jammy Doe', 'jammy.doe@example.com', 'jammy_d', '254733333333', '123456.jammy.doe', 'male', 'US'),
-    ('Jab Doe', 'jab.doe@example.com', 'd_jab', '254744444444', '123456.jab.doe', 'male', 'US'),
-    ('Jake Doe', 'jake.doe@example.com', 'jake_d', '254745555555', '123456.jake.doe', 'male', 'US')
-GO
-
-
-
 CREATE TABLE posts (
     post_id uniqueidentifier PRIMARY KEY DEFAULT(NEWID()),
     title varchar(100) NOT NULL,
