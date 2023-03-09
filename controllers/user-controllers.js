@@ -24,30 +24,23 @@ module.exports = {
             gender,
             country
         } = req.body
-        const { value, error } = validateSchema(req.body)
-        // console.log(value || error);
-        if (value) {
             try {
 
                 await sql.connect(config);
 
-                const hash = await bcrypt.hash(value.password, 8)
+                const hash = await bcrypt.hash(password, 8)
                 let result = await sql.query`INSERT INTO users
                 (full_name, email , user_name, phone_number, [password], gender, country ) VALUES
-                (${value.fullName},${value.email},${value.userName},${value.phoneNumber},${hash}, ${value.gender}, ${value.country} )`
+                (${fullName},${email},${userName},${phoneNumber},${hash}, ${gender}, ${country} )`
                 if (result.rowsAffected.length) res.json({ message: 'User successfully created' })
-
             } catch (error) {
                 console.log(error)
+                res.json({error})
             }
-        } else {
-            res.json({ message: error })
-        }
     },
 
     userLogin: async (req, res) => {
 
-        const validateLogin = createValidator(loginSchema);
 
         try {
             const { email, password } = req.body;
