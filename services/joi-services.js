@@ -26,7 +26,6 @@ const signUpSchema = Joi.object({
     country: Joi.string()
         .required(),
 
-
     gender: Joi.string()
         .required(),
 
